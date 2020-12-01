@@ -9,26 +9,22 @@ namespace Day1
         {
             if (args.Length > 0)
             {
-                if (args[0] != null)
+                if (args[0] == "1")
                 {
-                    if (args[0] == "1")
-                    {
-                        Part1();
-                    } 
-                    else if (args[0] == "2")
-                    {
-                        Part2();
-                    } 
-                    else 
-                    {
-                        goto InvalidOption;
-                    }
+                    Part1();
+                } 
+                else if (args[0] == "2")
+                {
+                    Part2();
+                } 
+                else 
+                {
+                    Console.WriteLine($"Please specify which part of the exercise you would like to run e.g dotnet run {"'1'"}");
                 }
             } 
             else {
-                goto InvalidOption;
+                Console.WriteLine($"Please specify which part of the exercise you would like to run e.g dotnet run {"'1'"}");
             }
-            InvalidOption: Console.WriteLine($"Please specify which part of the exercise you would like to run e.g dotnet run {"'1'"}");
         }
 
         static void Part1() {
