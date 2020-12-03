@@ -15,7 +15,7 @@ namespace Day3
                 } 
                 else if (args[0] == "2")
                 {
-                    // Part2();
+                    Part2();
                 } 
                 else 
                 {
@@ -51,7 +51,7 @@ namespace Day3
 
         static void Part2() {
             string[] input = File.ReadAllLines("input.txt");
-            int count = 0;
+            
             Tuple<int, int>[] configs = 
             {
                 Tuple.Create(1, 1),
@@ -60,12 +60,13 @@ namespace Day3
                 Tuple.Create(7, 1),
                 Tuple.Create(1, 2),
             };
+
             foreach (Tuple<int, int> config in configs)
             {
-                int x = 3;
-
-                for (int i = 1; i < input.Length; i++)
-                {
+                int x = config.Item1;
+                int count = 0;
+                for (int i = config.Item2; i < input.Length; i += config.Item2)
+                {   
                     if (x > input[1].Length - 1)
                     {
                         x = x - input[1].Length;
@@ -75,11 +76,11 @@ namespace Day3
                     {
                         count++;
                     }
-                    x += 3;
-                    
+                    x += config.Item1;
                 }
                 Console.WriteLine(count);
             }
+            Console.WriteLine(result);
         }
     }
 }
