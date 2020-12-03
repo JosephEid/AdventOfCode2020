@@ -16,7 +16,7 @@ namespace Day2
                 } 
                 else if (args[0] == "2")
                 {
-                    // Part2();
+                    Part2();
                 } 
                 else 
                 {
@@ -47,6 +47,32 @@ namespace Day2
                 int n  = password.Count(x => x == letter);
                 
                 if (n >= low && n <= hi)
+                {
+                    count ++;
+                }
+            }
+            Console.WriteLine(count);
+        }
+
+        static void Part2() {
+            string[] input = File.ReadAllLines("input.txt");
+            int count = 0;
+
+            for (int x = 0; x < input.Length; x++)
+            {
+                string[] inputSplit = input[x].Split(":");
+                string policy = inputSplit[0];
+                string password = inputSplit[1].Trim();
+                string[] policySplit = policy.Split(" ");
+                string range = policySplit[0];
+                char letter = Convert.ToChar(policySplit[1]);
+                string[] rangeSplit = range.Split("-");
+                int pos1 = Int32.Parse(rangeSplit[0]);
+                int pos2 = Int32.Parse(rangeSplit[1]);
+
+                bool match1 = pos1 > 0 && pos1 <= password.Length  ? password[pos1-1] == letter : false; 
+                bool match2 = pos2 > 0 && pos2 <= password.Length ? password[pos2-1] == letter : false;
+                if (match1 ^ match2)
                 {
                     count ++;
                 }
