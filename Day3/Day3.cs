@@ -80,7 +80,6 @@ namespace Day3
                 }
                 Console.WriteLine(count);
             }
-            Console.WriteLine(result);
         }
     }
 }
