@@ -17,7 +17,7 @@ namespace Day6
                 } 
                 else if (args[0] == "2")
                 {
-                    // Part2();
+                    Part2();
                 } 
                 else 
                 {
@@ -62,6 +62,46 @@ namespace Day6
                 sum += group.Distinct().Count();
                 // List<string> persons = group.Split(" ").ToList();
                 // persons.ForEach(x => Console.WriteLine($"person: {x}"));
+            }
+            Console.WriteLine(sum);
+        }
+
+        static void Part2()
+        {
+            string[] input = File.ReadAllLines("input.txt");
+            List<string> groups = new List<string>();
+
+            string builder = "";
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                string line = input[i].Trim();
+                
+                if (String.IsNullOrEmpty(line))
+                {
+                    groups.Add(builder.TrimEnd());
+                    builder = "";
+                }
+                else if (i == input.Length - 1)
+                {
+                    builder += $"{line} ";
+                    groups.Add(builder.TrimEnd());
+                    builder = "";
+                }
+                else
+                {
+                    builder += $"{line} ";
+                }
+            }
+            int sum = 0;
+            foreach (string group in groups)
+            {
+                int groupCount = 0;
+                List<char> questions = new List<char>();
+                foreach (char c in group.Replace(" ", "")) if (!questions.Contains(c)) questions.Add(c);
+                List<string> persons = group.Split(" ").ToList();
+                foreach (char q in questions) if (persons.All(x => x.Contains(q))) groupCount ++;
+                sum += groupCount;
             }
             Console.WriteLine(sum);
         }
