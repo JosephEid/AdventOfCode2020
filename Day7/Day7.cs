@@ -7,8 +7,10 @@ namespace Day7
     class Day7
     {
         public static Dictionary<string, List<Tuple<string, int>>> rules = new Dictionary<string, List<Tuple<string, int>>>();
+
         static void Main(string[] args)
         {
+            rules = new Dictionary<string, List<Tuple<string, int>>>();
             if (args.Length > 0)
             {
                 if (args[0] == "1")
@@ -17,7 +19,7 @@ namespace Day7
                 } 
                 else if (args[0] == "2")
                 {
-                    // Part2();
+                    Part2();
                 } 
                 else 
                 {
@@ -61,6 +63,53 @@ namespace Day7
                 if (found) count ++;
             }
             Console.WriteLine(count);
+        }
+
+        static void Part2()
+        {
+            string[] input = File.ReadAllLines("input.txt");
+
+            foreach (string l in input)
+            {
+                string[] splitL = l.Split(" bags contain ");
+                string colour = splitL[0];
+                string contents = splitL[1];
+
+                if (contents == "no other bags.") rules.Add(colour, null);
+                else
+                {
+                    string[] contSplit = contents.Split(", ");
+                    List<Tuple<string, int>> contArray = new List<Tuple<string, int>>();
+                    foreach (string c in contSplit)
+                    {
+                        string[] cSplit = c.Split(" ");
+                        contArray.Add(Tuple.Create($"{cSplit[1]} {cSplit[2]}", Int32.Parse(cSplit[0])));
+                    }
+                    rules.Add(colour, contArray);
+                }
+            }
+
+            int count = 0;
+
+            count += getChildCount("shiny gold");
+            Console.WriteLine(count);
+        }
+
+        static int getChildCount(string key)
+        {
+            int count = 0;
+            int bagCount = 0;
+            int childrenCount = 0;
+            var value = rules[key];
+            if (value == null) return 0;
+            foreach (var cont in value)
+            {
+                bagCount += cont.Item2;
+                childrenCount += getChildCount(cont.Item1)*cont.Item2;
+            }
+            count += bagCount;
+            count += childrenCount;
+            return count;
         }
 
         static bool findGold(string key)
