@@ -68,9 +68,9 @@ namespace Day10
 
             vals.Sort();
 
-            Console.WriteLine(CountArrangements(0, vals));
+            Console.WriteLine(GetPaths(0, vals));
         }
-        public static long CountArrangements(int start, List<int> vals)
+        public static long GetPaths(int start, List<int> vals)
         {
             if (cache.ContainsKey(start)) return cache[start];
 
@@ -80,7 +80,7 @@ namespace Day10
 
             for (int i = start + 1; i < vals.Count && vals[i] <= vals[start] + 3; i++)
             {
-                result += CountArrangements(i, vals);
+                result += GetPaths(i, vals);
             }
 
             cache.Add(start, result);
