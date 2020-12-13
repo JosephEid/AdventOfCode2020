@@ -7,6 +7,7 @@ namespace Day10
 {
     class Day10
     {
+        private static Dictionary<int, long> cache = new Dictionary<int, long>();
         static void Main(string[] args)
         {
             if (args.Length > 0)
@@ -17,7 +18,7 @@ namespace Day10
                 } 
                 else if (args[0] == "2")
                 {
-                    // Part2();
+                    Part2();
                 } 
                 else 
                 {
@@ -56,6 +57,34 @@ namespace Day10
                 }
             }
             Console.WriteLine(diff1 * diff3);
+        }
+
+        static void Part2()
+        {
+            List<string> input = File.ReadAllLines("input.txt").ToList();
+            List<int> vals = new List<int>();
+            vals.Add(0);
+            input.ForEach(x => vals.Add(Int32.Parse(x)));
+
+            vals.Sort();
+
+            Console.WriteLine(CountArrangements(0, vals));
+        }
+        public static long CountArrangements(int start, List<int> vals)
+        {
+            if (cache.ContainsKey(start)) return cache[start];
+
+            if (start == vals.Count - 1) return 1;
+
+            long result = 0;
+
+            for (int i = start + 1; i < vals.Count && vals[i] <= vals[start] + 3; i++)
+            {
+                result += CountArrangements(i, vals);
+            }
+
+            cache.Add(start, result);
+            return result;
         }
     }
 }
