@@ -17,7 +17,7 @@ namespace Day12
                 } 
                 else if (args[0] == "2")
                 {
-                    // Part2();
+                    Part2();
                 } 
                 else 
                 {
@@ -102,8 +102,11 @@ namespace Day12
         {
             List<string> input = File.ReadAllLines("input.txt").ToList();
 
+            int ewWay = 10;
             int ewPos = 0;
+            int nsWay = 1;
             int nsPos = 0;
+
             int dir = 0;
 
             foreach (string line in input)
@@ -114,57 +117,71 @@ namespace Day12
                 switch (cmd)
                 {
                     case "N":
-                        nsPos += val;
+                        nsWay += val;
                         break;
                     case "S":
-                        nsPos -= val;
+                        nsWay -= val;
                         break;
                     case "E":
-                        ewPos += val;
+                        ewWay += val;
                         break;
                     case "W":
-                        ewPos -= val;
+                        ewWay -= val;
                         break;
                     case "R":
-                        Console.WriteLine($"Current dir: {dir}, going R {val}");
-                        dir += val;
-                        Console.WriteLine($"Now facing: {dir}");
+                        Tuple<int, int> rotateRight = RotateWaypoint(Tuple.Create(ewWay, nsWay), val);
+                        ewWay = rotateRight.Item1;
+                        nsWay = rotateRight.Item2;
                         break;
                     case "L":
-                        Console.WriteLine($"Current dir: {dir}, going L {val}");
-                        dir -= val;
-                        Console.WriteLine($"Now facing: {dir}");
+                        Tuple<int, int> rotateLeft = RotateWaypoint(Tuple.Create(ewWay, nsWay), -val);
+                        ewWay = rotateLeft.Item1;
+                        nsWay = rotateLeft.Item2;
                         break;
                     case "F":
-                        switch (dir)
-                        {
-                            case 0:
-                                ewPos += val;
-                                break;
-                            case 90:
-                                nsPos -= val;
-                                break;
-                            case 180:
-                                ewPos -= val;
-                                break;
-                            case 270:
-                                nsPos += val;
-                                break;
-                            case -90:
-                                nsPos += val;
-                                break;
-                            case -180:
-                                ewPos -= val;
-                                break;
-                            case -270:
-                                nsPos -= val;
-                                break;
-                        }
+                        ewPos += ewWay * val;
+                        nsPos += nsWay * val;
                         break;
-                    
                 }
             }
             Console.WriteLine(Math.Abs(nsPos) + Math.Abs(ewPos));
+        }
+
+        static Tuple<int, int> RotateWaypoint(Tuple<int, int> waypoint, int dir)
+        {
+            int ewWayOld = waypoint.Item1;
+            int nsWayOld = waypoint.Item2;
+            int ewWayNew = 0;
+            int nsWayNew = 0;
+
+            switch (dir)
+            {
+                case 90:
+                    ewWayNew = nsWayOld;
+                    nsWayNew = -ewWayOld;
+                    break;
+                case 180:
+                    ewWayNew = -ewWayOld;
+                    nsWayNew = -nsWayOld;
+                    break;
+                case 270:
+                    ewWayNew = -nsWayOld;
+                    nsWayNew = ewWayOld;
+                    break;
+                case -90:
+                    ewWayNew = -nsWayOld;
+                    nsWayNew = ewWayOld;
+                    break;
+                case -180:
+                    ewWayNew = -ewWayOld;
+                    nsWayNew = -nsWayOld;
+                    break;
+                case -270:
+                    ewWayNew = nsWayOld;
+                    nsWayNew = -ewWayOld;
+                    break;
+            }
+            return Tuple.Create(ewWayNew, nsWayNew);
         }
     }
 }
